@@ -53,7 +53,7 @@ python3 kiem-soat/vi.py bao-cao
 **4. Chạy một lượt bằng tay.** Lượt đầu agent sẽ tự viết kế hoạch và sinh việc vào `kinh-doanh/BANG-VIEC.md`.
 
 ```bash
-./chay-luot.sh
+bash chay-luot.sh
 tail -50 nhat-ky/luot-$(date +%F).log
 ```
 
@@ -66,10 +66,10 @@ cp da-khai-tu/vn.aiauto.luot.plist ~/Library/LaunchAgents/
 launchctl load ~/Library/LaunchAgents/vn.aiauto.luot.plist
 ```
 
-Trên Linux thì dùng cron: `0 */2 * * * /đường/dẫn/ai-kiem-tien/chay-luot.sh`.
+Trên Linux thì dùng cron: `0 */2 * * * bash /đường/dẫn/ai-kiem-tien/chay-luot.sh`.
 
 **Tuỳ chọn:**
-- Ghi tiền khách trả từ máy chủ bán hàng: đặt `NGUON_DON_URL`, `NGUON_DON_KHOA`, rồi chạy `kiem-soat/nhap-giao-dich.sh`. Máy chủ phải trả JSON dạng `{"don":[{"ma","trang_thai","giao_dich":[{"id","so_tien","noi_dung"}]}]}`.
+- Ghi tiền khách trả từ máy chủ bán hàng: đặt `NGUON_DON_URL`, `NGUON_DON_KHOA`, rồi chạy `bash kiem-soat/nhap-giao-dich.sh`. Máy chủ phải trả JSON dạng `{"don":[{"ma","trang_thai","giao_dich":[{"id","so_tien","noi_dung"}]}]}`.
 - Trang nhật ký công khai: `node may-chu/kiem-tien/tao-du-lieu.mjs` dựng `web/du-lieu.json`, rồi đưa thư mục `web/` lên hosting tĩnh bất kỳ.
 
 ## Bài học
