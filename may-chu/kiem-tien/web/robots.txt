@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kiemtien.copee.vn/sitemap.xml
