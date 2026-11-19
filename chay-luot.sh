@@ -1,6 +1,6 @@
 #!/bin/bash
-# Một lượt chạy của agent AI AUTO KIẾM TIỀN (launchd vn.aiauto.luot). Khuôn chép từ ~/YOUTUBE SOLO/hoang-long-studio/chay-lich.sh.
-# Dừng khẩn cấp: touch "$HOME/AI AUTO KIẾM TIỀN/DUNG"
+# Một lượt chạy của agent (launchd vn.aiauto.luot, hoặc chạy tay: ./chay-luot.sh).
+# Dừng khẩn cấp: touch DUNG (trong thư mục này)
 export PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
 cd "$(dirname "$0")" || exit 1
 HAN=6600   # 110 phút: lượt làm nối tiếp từng việc tới sát giờ lượt sau (24/10); khoá chống chồng lượt
@@ -19,14 +19,15 @@ trap 'rmdir "$KHOA"' EXIT
 [[ -x kiem-soat/nhap-giao-dich.sh ]] && kiem-soat/nhap-giao-dich.sh >> "$NK" 2>&1
 
 echo "===== $(date '+%F %T') trạng thái $TT =====" >> "$NK"
-CLAUDE=$(ls -d "$HOME"/.vscode/extensions/anthropic.claude-code-*-darwin-arm64 2>/dev/null | sort -V | tail -1)/resources/native-binary/claude
+CLAUDE=$(command -v claude)   # Claude Code CLI; không có thì tìm trong extension VS Code
+[[ -x "$CLAUDE" ]] || CLAUDE=$(ls -d "$HOME"/.vscode/extensions/anthropic.claude-code-* 2>/dev/null | sort -V | tail -1)/resources/native-binary/claude
 [[ -x "$CLAUDE" ]] || { echo "Không thấy Claude CLI — bỏ lượt." >> "$NK"; exit 1; }
 
 BAT_DAU=$(date +%s)
 SID=""
 LOI_NHAC="Bắt đầu một lượt làm việc theo CLAUDE.md. Trạng thái tài chính: $TT. Bây giờ là $(date '+%F %H:%M').
 Kết thúc bằng 3–5 dòng tóm tắt tiếng Việt: đã làm gì, bằng chứng, việc lượt sau."
-# Anh Long duyệt 18/10: lượt hay dừng sau 1 phút → chạy tiếp cùng phiên tới khi đủ ~50 phút (tối đa 6 vòng).
+# Lượt hay dừng sau 1 phút → chạy tiếp cùng phiên tới khi hết giờ (tối đa 15 vòng).
 for VONG in $(seq 1 15); do
   OUT=$(mktemp)
   TIEP=(); [[ -n "$SID" ]] && TIEP=(--resume "$SID")
@@ -70,8 +71,7 @@ PY2
   DA_CHAY=$(( $(date +%s) - BAT_DAU ))
   (( DA_CHAY >= 6300 )) && break   # gần tới lượt sau thì dừng
   [[ -z "$SID" || -e DUNG ]] && break
-  # (24/10) Bỏ dừng sớm: anh Long thấy lượt làm 1 việc rồi nghỉ ~2 tiếng. Lượt làm liên tục tới ~45 phút, chỉ dừng khi hết giờ hoặc bảng CHỜ trống.
   python3 kinh-doanh/kiem-bang-viec.py >/dev/null 2>&1 || true
-  LOI_NHAC="Việc vừa làm đã chuyển sang XONG (giờ xong + bằng chứng) trong kinh-doanh/BANG-VIEC.md chưa? Chưa thì làm ngay. Rồi lấy NGAY việc tiếp theo trong CHỜ (anh Long 24/10: làm xong đánh dấu xong, vào tiếp việc kế, cứ thế làm tiếp): chuyển sang ĐANG LÀM + giờ bắt đầu, chạy ~/.claude-edge/aiauto-cap-nhat-kiemtien.sh, làm xong hẳn ĐÚNG 1 việc, chuyển sang XONG, thêm 1 dòng nhật ký công khai, chạy lại script đó. CHỜ dưới 5 thì sinh thêm việc có nguồn. Việc cần trình duyệt/ảnh bìa → ghi CHỜ PHIÊN CHÍNH rồi lấy việc khác. Kết thúc bằng 2–3 dòng tóm tắt việc vừa xong."
+  LOI_NHAC="Việc vừa làm đã chuyển sang XONG (giờ xong + bằng chứng) trong kinh-doanh/BANG-VIEC.md chưa? Chưa thì làm ngay. Rồi lấy NGAY việc tiếp theo trong CHỜ (làm xong đánh dấu xong, vào tiếp việc kế): chuyển sang ĐANG LÀM + giờ bắt đầu, làm xong hẳn ĐÚNG 1 việc, chuyển sang XONG rồi thêm 1 dòng nhật ký công khai. CHỜ dưới 5 thì sinh thêm việc có nguồn. Việc cần chủ (đăng nhập, bấm nút) → ghi vào \"Cần chủ\" trong KE-HOACH.md rồi lấy việc khác. Kết thúc bằng 2–3 dòng tóm tắt việc vừa xong."
 done
 echo "===== hết $(date '+%F %T') =====" >> "$NK"
