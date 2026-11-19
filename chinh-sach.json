@@ -1,0 +1,22 @@
+{
+  "_ghi_chu": "Chinh sach tai chinh. Chi anh Long sua. Agent KHONG duoc sua (tep bi khoa chflags uchg).",
+  "von_khoi_tao": 2000000,
+  "quy_du_phong": 500000,
+  "han_muc_hang_muc": {
+    "ha-tang": 300000,
+    "ai-api": 400000,
+    "thu-nghiem": 400000,
+    "cong-cu": 200000,
+    "chua-phan-bo": 200000,
+    "quang-cao": 0
+  },
+  "han_muc_moi_lan": 150000,
+  "han_muc_ngay": 200000,
+  "han_muc_thang": 1000000,
+  "tu_dong_duyet_toi_da": 50000,
+  "luon_can_chu_duyet": ["quang-cao", "chua-phan-bo"],
+  "loai_luon_can_chu_duyet": ["chuyen-tien", "hoan-tien", "dang-ky-dinh-ky", "doi-thong-tin-thanh-toan", "trien-khai-production-moi"],
+  "nha_cung_cap_cho_phep": ["inet.vn", "tenten.vn", "matbao.net", "namecheap.com", "cloudflare.com", "anthropic.com", "vultr.com", "minimax", "openai.com"],
+  "nguong": { "tiet_kiem": 0.70, "sinh_ton": 0.40, "dung": 0.20 },
+  "ty_gia_usd": 26500
+}
